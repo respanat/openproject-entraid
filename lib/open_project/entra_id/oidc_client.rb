@@ -119,11 +119,30 @@ module OpenProject
       def jwks_loader
         lambda do |options|
           force = options[:kid_not_found] || options[:invalidate]
-          keys = self.class.cached("jwks:#{config.tenant_id}", force:) do
-            @http.get_json(metadata.fetch("jwks_uri"))
+          keys = self.class.cached("jwks:#{config.tenant_id}:#{config.client_id}", force:) do
+            merged_jwks
           end
           JWT::JWK::Set.new(keys)
         end
+      end
+
+      ##
+      # Claves del tenant + claves propias de la aplicación.
+      # Si la app tiene un certificado de firma propio (p. ej. SSO SAML configurado
+      # en la aplicación empresarial o claims mapping), Entra firma los id_token
+      # con esa llave y solo la publica en jwks_uri?appid=<client_id>.
+      def merged_jwks
+        uri = metadata.fetch("jwks_uri")
+        separator = uri.include?("?") ? "&" : "?"
+        app_uri = "#{uri}#{separator}appid=#{URI.encode_www_form_component(config.client_id)}"
+
+        keys = Array(@http.get_json(uri)["keys"])
+        begin
+          keys += Array(@http.get_json(app_uri)["keys"])
+        rescue Http::Error
+          # Sin claves propias de la app: basta con las del tenant.
+        end
+        { "keys" => keys.uniq { |k| k["kid"] || k[:kid] || k } }
       end
 
       def secure_compare(left, right)

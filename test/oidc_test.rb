@@ -9,6 +9,8 @@ TENANT = "11111111-2222-3333-4444-555555555555"
 CLIENT = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
 KEY = OpenSSL::PKey::RSA.generate(2048)
 JWK = JWT::JWK.new(KEY, kid: "k1")
+APP_KEY = OpenSSL::PKey::RSA.generate(2048)
+APP_JWK = JWT::JWK.new(APP_KEY, kid: "app1")
 
 class FakeHttp
   attr_reader :calls
@@ -20,6 +22,7 @@ class FakeHttp
       "authorization_endpoint" => "https://login.microsoftonline.com/#{TENANT}/oauth2/v2.0/authorize",
       "token_endpoint" => "https://login.microsoftonline.com/#{TENANT}/oauth2/v2.0/token",
       "jwks_uri" => "https://login.microsoftonline.com/#{TENANT}/discovery/v2.0/keys" }
+    when /keys\?appid=#{CLIENT}/ then { "keys" => [APP_JWK.export] }
     when /keys/ then { "keys" => [JWK.export] }
     end
   end
@@ -65,6 +68,12 @@ class OidcTest < Minitest::Test
     define_method("test_rejects_#{name}") do
       assert_raises(OpenProject::EntraId::LoginError) { client.validate_id_token(token(claims), nonce:) }
     end
+  end
+
+  # Apps con SSO SAML firman el id_token con su propia llave (jwks_uri?appid=...).
+  def test_accepts_app_specific_signing_key
+    claims = client.validate_id_token(token({}, key: APP_KEY, kid: "app1"), nonce: "n1")
+    assert_equal "99999999-0000-0000-0000-000000000001", claims["oid"]
   end
 
   def test_rejects_foreign_key
