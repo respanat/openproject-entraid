@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 — 2026-11-20
+
+- Corrige error 500 en /entra_id/login y /entra_id/callback: el controlador sobreescribía el método `config` de ActionController.
+
 ## 0.1.0 — 2026-11-20
 
 - Inicio de sesión con Microsoft Entra ID (OIDC Authorization Code + PKCE, single-tenant).

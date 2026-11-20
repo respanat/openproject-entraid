@@ -53,11 +53,11 @@ module EntraId
       claims = client.validate_id_token(tokens.fetch("id_token"), nonce: pending["nonce"])
       graph = OpenProject::EntraId::GraphClient.new(tokens.fetch("access_token"))
 
-      gate = EntraId::GroupGate.new(config, claims, graph).call
+      gate = EntraId::GroupGate.new(entra_config, claims, graph).call
       return fail_login(gate.reason || :not_in_allowed_group, claims["preferred_username"]) unless gate.allowed?
 
-      profile = EntraId::Profile.new(claims, fetch_graph_profile(graph), login_attribute: config.login_attribute)
-      result = EntraId::UserProvisioner.new(profile, config).call
+      profile = EntraId::Profile.new(claims, fetch_graph_profile(graph), login_attribute: entra_config.login_attribute)
+      result = EntraId::UserProvisioner.new(profile, entra_config).call
       return fail_login(result.error, profile.to_s) unless result.success?
 
       logger.info("[entra_id] Inicio de sesión de #{profile}")
@@ -70,14 +70,15 @@ module EntraId
 
     private
 
-    def config
-      @config ||= OpenProject::EntraId.configuration
+    # No usar "config": ese nombre es de ActionController (logger, assets, etc.).
+    def entra_config
+      @entra_config ||= OpenProject::EntraId.configuration
     end
 
     def client_class = OpenProject::EntraId::OidcClient
 
     def client
-      @client ||= client_class.new(config)
+      @client ||= client_class.new(entra_config)
     end
 
     def callback_url
@@ -85,7 +86,7 @@ module EntraId
     end
 
     def require_usable_configuration
-      render_404 unless config.usable?
+      render_404 unless entra_config.usable?
     end
 
     def valid_pending?(pending)

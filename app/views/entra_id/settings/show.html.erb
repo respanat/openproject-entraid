@@ -1,5 +1,5 @@
 <% html_title t(:label_administration), t("entra_id.menu_title") %>
-<% v = @config.values %>
+<% v = @entra_config.values %>
 
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
@@ -10,10 +10,10 @@
   end
 %>
 
-<% if @config.enabled? && @config.configuration_errors.any? %>
+<% if @entra_config.enabled? && @entra_config.configuration_errors.any? %>
   <%= render(Primer::Alpha::Banner.new(scheme: :warning, mb: 3)) do %>
     <%= t("entra_id.settings.incomplete",
-          fields: @config.configuration_errors.map { |e| t("entra_id.settings.fields.#{e}") }.join(", ")) %>
+          fields: @entra_config.configuration_errors.map { |e| t("entra_id.settings.fields.#{e}") }.join(", ")) %>
   <% end %>
 <% end %>
 
@@ -33,7 +33,7 @@
       <%= f.label :enabled, t("entra_id.settings.fields.enabled"), class: "form--label" %>
       <div class="form--field-container">
         <%= f.hidden_field :enabled, value: "0", id: nil %>
-        <%= f.check_box :enabled, { checked: @config.enabled?, class: "form--check-box" }, "1", nil %>
+        <%= f.check_box :enabled, { checked: @entra_config.enabled?, class: "form--check-box" }, "1", nil %>
       </div>
     </div>
 
@@ -41,8 +41,8 @@
       <div class="form--field">
         <%= f.label key, t("entra_id.settings.fields.#{key}"), class: "form--label" %>
         <div class="form--field-container">
-          <% if @config.from_env?(key) %>
-            <code><%= @config.public_send(key) %></code>
+          <% if @entra_config.from_env?(key) %>
+            <code><%= @entra_config.public_send(key) %></code>
             <span class="form--field-instructions"><%= t("entra_id.settings.from_env", var: OpenProject::EntraId::Configuration::ENV_KEYS[key]) %></span>
             <%= f.hidden_field key, value: v[key] %>
           <% else %>
@@ -55,7 +55,7 @@
     <div class="form--field">
       <%= f.label :client_secret, t("entra_id.settings.fields.client_secret"), class: "form--label" %>
       <div class="form--field-container">
-        <% if @config.from_env?("client_secret") %>
+        <% if @entra_config.from_env?("client_secret") %>
           <span><%= t("entra_id.settings.from_env", var: "ENTRA_ID_CLIENT_SECRET") %></span>
         <% else %>
           <%= f.password_field :client_secret, value: "", class: "form--text-field", autocomplete: "new-password",
@@ -63,7 +63,7 @@
         <% end %>
       </div>
       <div class="form--field-instructions"><%= t("entra_id.settings.secret_help") %></div>
-      <% if v["client_secret"].present? && !@config.from_env?("client_secret") %>
+      <% if v["client_secret"].present? && !@entra_config.from_env?("client_secret") %>
         <label class="form--label-with-check-box">
           <%= f.check_box :clear_secret, { class: "form--check-box" }, "1", nil %>
           <%= t("entra_id.settings.clear_secret") %>
@@ -74,7 +74,7 @@
     <div class="form--field">
       <%= f.label :button_label, t("entra_id.settings.fields.button_label"), class: "form--label" %>
       <div class="form--field-container">
-        <%= f.text_field :button_label, value: @config.button_label, class: "form--text-field" %>
+        <%= f.text_field :button_label, value: @entra_config.button_label, class: "form--text-field" %>
       </div>
     </div>
   </section>
@@ -99,7 +99,7 @@
         <%= f.label key, t("entra_id.settings.fields.#{key}"), class: "form--label" %>
         <div class="form--field-container">
           <%= f.hidden_field key, value: "0", id: nil %>
-          <%= f.check_box key, { checked: @config.public_send("#{key}?"), class: "form--check-box" }, "1", nil %>
+          <%= f.check_box key, { checked: @entra_config.public_send("#{key}?"), class: "form--check-box" }, "1", nil %>
         </div>
         <div class="form--field-instructions"><%= t("entra_id.settings.help.#{key}") %></div>
       </div>
@@ -110,7 +110,7 @@
       <div class="form--field-container">
         <%= f.select :login_attribute,
                      [[t("entra_id.settings.login_upn"), "upn"], [t("entra_id.settings.login_mail"), "mail"]],
-                     { selected: @config.login_attribute }, class: "form--select" %>
+                     { selected: @entra_config.login_attribute }, class: "form--select" %>
       </div>
     </div>
 
@@ -121,7 +121,7 @@
 <% end %>
 
 <%= form_with url: entra_id_settings_test_path, method: :post, local: true do %>
-  <button type="submit" class="button" <%= "disabled" unless @config.tenant_id.present? %>>
+  <button type="submit" class="button" <%= "disabled" unless @entra_config.tenant_id.present? %>>
     <%= t("entra_id.settings.test_button") %>
   </button>
 <% end %>

@@ -14,7 +14,7 @@ module EntraId
     TEXT_KEYS = %w[tenant_id client_id button_label allowed_group_ids login_attribute].freeze
 
     def show
-      @config = OpenProject::EntraId.configuration
+      @entra_config = OpenProject::EntraId.configuration
       @callback_url = OpenProject::EntraId::Engine.callback_url(request)
       @linked_users = EntraId::Compat.linked_users_count
     end
@@ -49,10 +49,10 @@ module EntraId
 
     # Comprueba que el tenant responde (documento de descubrimiento y JWKS).
     def test
-      config = OpenProject::EntraId.configuration
-      client = OpenProject::EntraId::OidcClient.new(config)
+      entra_config = OpenProject::EntraId.configuration
+      client = OpenProject::EntraId::OidcClient.new(entra_config)
       metadata = client.metadata(force: true)
-      issuer_ok = metadata["issuer"].to_s.casecmp?(config.expected_issuer)
+      issuer_ok = metadata["issuer"].to_s.casecmp?(entra_config.expected_issuer)
 
       if issuer_ok
         flash[:notice] = I18n.t("entra_id.settings.test_ok", issuer: metadata["issuer"])
