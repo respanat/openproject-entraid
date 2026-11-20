@@ -1,0 +1,15 @@
+<% entra_config = OpenProject::EntraId.configuration %>
+<% if entra_config.usable? %>
+  <%
+    entra_params = {}
+    entra_params[:back_url] = params[:back_url] if params[:back_url].present?
+  %>
+  <%= render(Primer::Beta::Button.new(tag: :a,
+                                      href: entra_id_login_path(entra_params),
+                                      block: true,
+                                      classes: "auth-provider auth-provider-entra_id",
+                                      data: { turbo: false })) do |button| %>
+    <% button.with_leading_visual_icon(icon: :key) %>
+    <span class="auth-provider-name"><%= entra_config.button_label %></span>
+  <% end %>
+<% end %>

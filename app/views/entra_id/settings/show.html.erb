@@ -1,0 +1,127 @@
+<% html_title t(:label_administration), t("entra_id.menu_title") %>
+<% v = @config.values %>
+
+<%=
+  render(Primer::OpenProject::PageHeader.new) do |header|
+    header.with_title { t("entra_id.menu_title") }
+    header.with_description { t("entra_id.settings.description") }
+    header.with_breadcrumbs([{ href: admin_index_path, text: t(:label_administration) },
+                             t("entra_id.menu_title")])
+  end
+%>
+
+<% if @config.enabled? && @config.configuration_errors.any? %>
+  <%= render(Primer::Alpha::Banner.new(scheme: :warning, mb: 3)) do %>
+    <%= t("entra_id.settings.incomplete",
+          fields: @config.configuration_errors.map { |e| t("entra_id.settings.fields.#{e}") }.join(", ")) %>
+  <% end %>
+<% end %>
+
+<%= form_with url: entra_id_settings_path, method: :patch, scope: :entra_id, local: true, class: "form" do |f| %>
+  <section class="form--section">
+    <h3 class="form--section-title"><%= t("entra_id.settings.section_app") %></h3>
+
+    <div class="form--field">
+      <label class="form--label"><%= t("entra_id.settings.redirect_uri") %></label>
+      <div class="form--field-container">
+        <code><%= @callback_url %></code>
+      </div>
+      <div class="form--field-instructions"><%= t("entra_id.settings.redirect_uri_help") %></div>
+    </div>
+
+    <div class="form--field">
+      <%= f.label :enabled, t("entra_id.settings.fields.enabled"), class: "form--label" %>
+      <div class="form--field-container">
+        <%= f.hidden_field :enabled, value: "0", id: nil %>
+        <%= f.check_box :enabled, { checked: @config.enabled?, class: "form--check-box" }, "1", nil %>
+      </div>
+    </div>
+
+    <% %w[tenant_id client_id].each do |key| %>
+      <div class="form--field">
+        <%= f.label key, t("entra_id.settings.fields.#{key}"), class: "form--label" %>
+        <div class="form--field-container">
+          <% if @config.from_env?(key) %>
+            <code><%= @config.public_send(key) %></code>
+            <span class="form--field-instructions"><%= t("entra_id.settings.from_env", var: OpenProject::EntraId::Configuration::ENV_KEYS[key]) %></span>
+            <%= f.hidden_field key, value: v[key] %>
+          <% else %>
+            <%= f.text_field key, value: v[key], class: "form--text-field", placeholder: "00000000-0000-0000-0000-000000000000", autocomplete: "off" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="form--field">
+      <%= f.label :client_secret, t("entra_id.settings.fields.client_secret"), class: "form--label" %>
+      <div class="form--field-container">
+        <% if @config.from_env?("client_secret") %>
+          <span><%= t("entra_id.settings.from_env", var: "ENTRA_ID_CLIENT_SECRET") %></span>
+        <% else %>
+          <%= f.password_field :client_secret, value: "", class: "form--text-field", autocomplete: "new-password",
+                               placeholder: v["client_secret"].present? ? t("entra_id.settings.secret_saved") : "" %>
+        <% end %>
+      </div>
+      <div class="form--field-instructions"><%= t("entra_id.settings.secret_help") %></div>
+      <% if v["client_secret"].present? && !@config.from_env?("client_secret") %>
+        <label class="form--label-with-check-box">
+          <%= f.check_box :clear_secret, { class: "form--check-box" }, "1", nil %>
+          <%= t("entra_id.settings.clear_secret") %>
+        </label>
+      <% end %>
+    </div>
+
+    <div class="form--field">
+      <%= f.label :button_label, t("entra_id.settings.fields.button_label"), class: "form--label" %>
+      <div class="form--field-container">
+        <%= f.text_field :button_label, value: @config.button_label, class: "form--text-field" %>
+      </div>
+    </div>
+  </section>
+
+  <section class="form--section">
+    <h3 class="form--section-title"><%= t("entra_id.settings.section_access") %></h3>
+
+    <div class="form--field">
+      <%= f.label :allowed_group_ids, t("entra_id.settings.fields.allowed_group_ids"), class: "form--label" %>
+      <div class="form--field-container">
+        <%= f.text_area :allowed_group_ids, value: v["allowed_group_ids"], rows: 4, class: "form--text-area" %>
+      </div>
+      <div class="form--field-instructions"><%= t("entra_id.settings.allowed_groups_help") %></div>
+    </div>
+  </section>
+
+  <section class="form--section">
+    <h3 class="form--section-title"><%= t("entra_id.settings.section_users") %></h3>
+
+    <% %w[auto_create_users link_existing_users update_user_on_login].each do |key| %>
+      <div class="form--field">
+        <%= f.label key, t("entra_id.settings.fields.#{key}"), class: "form--label" %>
+        <div class="form--field-container">
+          <%= f.hidden_field key, value: "0", id: nil %>
+          <%= f.check_box key, { checked: @config.public_send("#{key}?"), class: "form--check-box" }, "1", nil %>
+        </div>
+        <div class="form--field-instructions"><%= t("entra_id.settings.help.#{key}") %></div>
+      </div>
+    <% end %>
+
+    <div class="form--field">
+      <%= f.label :login_attribute, t("entra_id.settings.fields.login_attribute"), class: "form--label" %>
+      <div class="form--field-container">
+        <%= f.select :login_attribute,
+                     [[t("entra_id.settings.login_upn"), "upn"], [t("entra_id.settings.login_mail"), "mail"]],
+                     { selected: @config.login_attribute }, class: "form--select" %>
+      </div>
+    </div>
+
+    <p><%= t("entra_id.settings.linked_users", count: @linked_users) %></p>
+  </section>
+
+  <%= f.submit t(:button_save), class: "button -primary" %>
+<% end %>
+
+<%= form_with url: entra_id_settings_test_path, method: :post, local: true do %>
+  <button type="submit" class="button" <%= "disabled" unless @config.tenant_id.present? %>>
+    <%= t("entra_id.settings.test_button") %>
+  </button>
+<% end %>
