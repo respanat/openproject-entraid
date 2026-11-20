@@ -58,7 +58,7 @@ es:
         update_user_on_login: Sincroniza nombre, apellido y correo desde Entra al iniciar sesión.
       section_appearance: Apariencia de la página de inicio de sesión
       remove_logo: Quitar el logo subido
-      custom_logo_help: PNG, JPG, GIF, WEBP o SVG de hasta %{max} KB. Se recomienda un logo horizontal o cuadrado con fondo transparente. Al subirlo, el botón pasa a usar el logo empresarial.
+      custom_logo_help: 'PNG, JPG, GIF, WEBP o SVG de hasta %{max} KB. Tamaño recomendado: 400 × 122 px (proporción 3,28:1) con fondo transparente; otros tamaños se ajustan sin deformarse. Al subirlo, el botón pasa a usar el logo empresarial.'
       local_login_help: 'Plegado: el botón de Microsoft queda arriba y el formulario aparece al pulsar "Usar usuario y contraseña". Oculto: solo se ve Microsoft; los administradores siempre pueden entrar con usuario y contraseña en %{url}'
       logo_empty: El archivo del logo está vacío.
       logo_too_big: El logo supera el tamaño máximo de %{max} KB. No se cambió el logo.
@@ -76,8 +76,8 @@ es:
       logo_layout_help: Solo para el logo de Microsoft o el empresarial. "Botón completo" muestra solo el logo; el texto se conserva para lectores de pantalla.
       logo_layouts:
         inline: En línea, a la izquierda del texto
-        above: Arriba del texto (más grande)
-        full: Botón completo (solo el logo)
+        above: Arriba del texto (caja de 200 × 61)
+        full: Botón completo (solo el logo, hasta 400 × 122)
     login:
       show_local: Usar usuario y contraseña
       hide_local: Ocultar acceso con usuario y contraseña

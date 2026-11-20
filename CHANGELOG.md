@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2 — 2026-11-20
+
+- Los logos usan una caja de referencia de 400 × 122 (3,28:1) con `object-fit: contain`: "arriba del texto" a 200 × 61 y "botón completo" hasta 400 × 122. Tamaño recomendado indicado en la configuración.
+
 ## 0.2.1 — 2026-11-20
 
 - Disposición del logo: en línea, arriba del texto (más grande) o botón completo (solo el logo, texto conservado para lectores de pantalla).

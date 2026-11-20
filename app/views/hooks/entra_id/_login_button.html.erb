@@ -65,8 +65,12 @@
     .auth-provider-entra_id .entra-id-logo { height: 18px; max-width: 72px; width: auto; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 8px; }
     .auth-provider-entra_id:is(.entra-id-layout-above, .entra-id-layout-full) { height: auto !important; min-height: 32px; padding-block: 10px; }
     .auth-provider-entra_id:is(.entra-id-layout-above, .entra-id-layout-full) .Button-label { display: flex; flex-direction: column; align-items: center; gap: 6px; white-space: normal; overflow: visible; }
-    .auth-provider-entra_id.entra-id-layout-above .entra-id-logo { height: 36px; max-width: 180px; margin: 0; }
-    .auth-provider-entra_id.entra-id-layout-full .entra-id-logo { height: 48px; max-width: 100%; margin: 0; }
+    /* Caja de referencia 400 x 122: cualquier logo se ajusta dentro sin deformarse. */
+    .auth-provider-entra_id:is(.entra-id-layout-above, .entra-id-layout-full) .entra-id-logo { aspect-ratio: 400 / 122; height: auto; object-fit: contain; margin: 0; }
+    .auth-provider-entra_id.entra-id-layout-above .entra-id-logo { width: 200px; max-width: 100%; }
+    .auth-provider-entra_id.entra-id-layout-full .entra-id-logo { width: 100%; max-width: 400px; }
+    .auth-provider-entra_id.entra-id-layout-full .Button-content { width: 100%; justify-content: center; }
+    .auth-provider-entra_id.entra-id-layout-full .Button-label { width: 100%; }
     .auth-provider-entra_id.entra-id-layout-full .auth-provider-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   </style>
 <% end %>

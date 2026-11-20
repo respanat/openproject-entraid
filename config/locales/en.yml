@@ -58,7 +58,7 @@ en:
         update_user_on_login: Syncs first name, last name and email from Entra on sign-in.
       section_appearance: Sign-in page appearance
       remove_logo: Remove the uploaded logo
-      custom_logo_help: PNG, JPG, GIF, WEBP or SVG up to %{max} KB. A horizontal or square logo with transparent background works best. Uploading switches the button to the company logo.
+      custom_logo_help: 'PNG, JPG, GIF, WEBP or SVG up to %{max} KB. Recommended size: 400 × 122 px (3.28:1 ratio) with transparent background; other sizes are scaled without distortion. Uploading switches the button to the company logo.'
       local_login_help: 'Collapsed: the Microsoft button comes first and the form appears when clicking "Use username and password". Hidden: only Microsoft is shown; administrators can always sign in with a password at %{url}'
       logo_empty: The logo file is empty.
       logo_too_big: The logo exceeds the maximum size of %{max} KB. The logo was not changed.
@@ -76,8 +76,8 @@ en:
       logo_layout_help: Only for the Microsoft or company logo. "Full button" shows only the logo; the text is kept for screen readers.
       logo_layouts:
         inline: Inline, left of the text
-        above: Above the text (larger)
-        full: Full button (logo only)
+        above: Above the text (200 × 61 box)
+        full: Full button (logo only, up to 400 × 122)
     login:
       show_local: Use username and password
       hide_local: Hide username and password sign-in
