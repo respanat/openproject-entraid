@@ -30,8 +30,14 @@ module OpenProject
         "auto_create_users" => true,
         "link_existing_users" => true,
         "login_attribute" => "upn", # upn | mail
-        "update_user_on_login" => true
+        "update_user_on_login" => true,
+        "button_logo" => "key", # key | microsoft | custom | none
+        "custom_logo" => "", # data URI (image/png, image/jpeg, image/gif, image/webp, image/svg+xml)
+        "local_login_mode" => "visible" # visible | collapsed | hidden
       }.freeze
+
+      BUTTON_LOGOS = %w[key microsoft custom none].freeze
+      LOCAL_LOGIN_MODES = %w[visible collapsed hidden].freeze
 
       GUID = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i
 
@@ -63,6 +69,21 @@ module OpenProject
       def button_label
         label = values["button_label"].to_s.strip
         label.empty? ? DEFAULTS["button_label"] : label
+      end
+
+      def button_logo
+        logo = values["button_logo"].to_s
+        logo = "key" unless BUTTON_LOGOS.include?(logo)
+        logo == "custom" && custom_logo.empty? ? "key" : logo
+      end
+
+      def custom_logo
+        values["custom_logo"].to_s.start_with?("data:image/") ? values["custom_logo"].to_s : ""
+      end
+
+      def local_login_mode
+        mode = values["local_login_mode"].to_s
+        LOCAL_LOGIN_MODES.include?(mode) ? mode : "visible"
       end
 
       def login_attribute

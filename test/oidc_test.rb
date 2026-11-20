@@ -99,4 +99,28 @@ class OidcTest < Minitest::Test
     p2 = EntraId::Profile.new(claims, { "givenName" => "R", "surname" => "E", "mail" => "r@x.co" }, login_attribute: "mail")
     assert_equal ["r@x.co", "R", "E"], [p2.login, p2.firstname, p2.lastname]
   end
+
+  def test_logo_upload
+    up = OpenProject::EntraId::LogoUpload
+    png = "\x89PNG\r\n\x1A\n".b + "x" * 20
+    assert up.to_data_uri(png).start_with?("data:image/png;base64,")
+    svg = %(<?xml version="1.0"?>\n<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>)
+    assert up.to_data_uri(svg).start_with?("data:image/svg+xml;base64,")
+    err = ->(bytes) { assert_raises(up::Invalid) { up.to_data_uri(bytes) }.message }
+    assert_equal "logo_bad_type", err.call("<html>hola</html>")
+    assert_equal "logo_too_big", err.call(png + "x" * up::MAX_BYTES)
+    assert_equal "logo_unsafe_svg", err.call(%(<svg><script>alert(1)</script></svg>))
+    assert_equal "logo_unsafe_svg", err.call(%(<svg onload="x()"></svg>))
+    assert_equal "logo_unsafe_svg", err.call(%(<svg><image href="https://evil/x.png"/></svg>))
+    assert_equal "logo_empty", err.call("")
+  end
+
+  def test_appearance_settings
+    assert_equal ["key", "visible"], [config.button_logo, config.local_login_mode]
+    assert_equal "key", config({ "button_logo" => "custom" }).button_logo # sin logo subido
+    c = config({ "button_logo" => "custom", "custom_logo" => "data:image/png;base64,AA==", "local_login_mode" => "hidden" })
+    assert_equal ["custom", "hidden"], [c.button_logo, c.local_login_mode]
+    assert_equal "", config({ "custom_logo" => "javascript:alert(1)" }).custom_logo
+    assert_equal "visible", config({ "local_login_mode" => "raro" }).local_login_mode
+  end
 end

@@ -1,54 +1,77 @@
 es:
   entra_id:
-    menu_title: "Microsoft Entra ID"
+    menu_title: Microsoft Entra ID
     errors:
-      login_failed: "No se pudo iniciar sesión con Microsoft Entra ID. Intenta de nuevo o contacta al administrador."
-      connection_error: "No se pudo contactar a Microsoft Entra ID. Intenta de nuevo en unos minutos."
-      entra_error: "Microsoft Entra ID canceló o rechazó el inicio de sesión."
-      invalid_state: "La sesión de inicio expiró o no es válida. Vuelve a pulsar el botón de Microsoft."
-      invalid_response: "La respuesta de Microsoft Entra ID está incompleta."
-      not_in_allowed_group: "Tu cuenta de Microsoft no pertenece a un grupo autorizado para usar OpenProject."
-      graph_error: "No se pudo verificar tu pertenencia a grupos en Microsoft Entra ID."
-      user_not_found: "Tu cuenta de Microsoft no tiene un usuario en OpenProject. Pide al administrador que te dé acceso."
-      account_locked: "Tu usuario de OpenProject está bloqueado."
-      invalid_user: "No se pudo crear o actualizar tu usuario en OpenProject. Contacta al administrador."
-      activation_failed: "Tu usuario de OpenProject no pudo activarse (revisa el límite de usuarios o el registro)."
+      login_failed: No se pudo iniciar sesión con Microsoft Entra ID. Intenta de nuevo o contacta al administrador.
+      connection_error: No se pudo contactar a Microsoft Entra ID. Intenta de nuevo en unos minutos.
+      entra_error: Microsoft Entra ID canceló o rechazó el inicio de sesión.
+      invalid_state: La sesión de inicio expiró o no es válida. Vuelve a pulsar el botón de Microsoft.
+      invalid_response: La respuesta de Microsoft Entra ID está incompleta.
+      not_in_allowed_group: Tu cuenta de Microsoft no pertenece a un grupo autorizado para usar OpenProject.
+      graph_error: No se pudo verificar tu pertenencia a grupos en Microsoft Entra ID.
+      user_not_found: Tu cuenta de Microsoft no tiene un usuario en OpenProject. Pide al administrador que te dé acceso.
+      account_locked: Tu usuario de OpenProject está bloqueado.
+      invalid_user: No se pudo crear o actualizar tu usuario en OpenProject. Contacta al administrador.
+      activation_failed: Tu usuario de OpenProject no pudo activarse (revisa el límite de usuarios o el registro).
     settings:
-      description: "Inicio de sesión con Microsoft Entra ID (OpenID Connect) para OpenProject Community."
-      section_app: "Registro de aplicación en Entra"
-      section_access: "Restricción de acceso"
-      section_users: "Usuarios"
-      redirect_uri: "URI de redirección"
-      redirect_uri_help: "Regístrala en Entra > Registros de aplicaciones > Autenticación > plataforma Web. Se basa en el nombre de host y protocolo de Administración > Sistema."
+      description: Inicio de sesión con Microsoft Entra ID (OpenID Connect) para OpenProject Community.
+      section_app: Registro de aplicación en Entra
+      section_access: Restricción de acceso
+      section_users: Usuarios
+      redirect_uri: URI de redirección
+      redirect_uri_help: Regístrala en Entra > Registros de aplicaciones > Autenticación > plataforma Web. Se basa en el nombre de host y protocolo de Administración > Sistema.
       secret_saved: "•••••• (guardado; déjalo vacío para conservarlo)"
-      secret_help: "Valor del secreto de cliente (no el ID del secreto). Recomendado: definirlo con 'openproject config:set ENTRA_ID_CLIENT_SECRET=...'."
-      clear_secret: "Borrar el secreto guardado"
-      from_env: "Definido por la variable de entorno %{var}"
-      allowed_groups_help: "IDs de objeto de los grupos de Entra autorizados, separados por coma o línea. Vacío = cualquier usuario del tenant. Se verifica en cada inicio de sesión (incluye grupos anidados)."
-      login_upn: "Nombre principal de usuario (UPN)"
-      login_mail: "Correo electrónico"
+      secret_help: 'Valor del secreto de cliente (no el ID del secreto). Recomendado: definirlo con ''openproject config:set ENTRA_ID_CLIENT_SECRET=...''.'
+      clear_secret: Borrar el secreto guardado
+      from_env: Definido por la variable de entorno %{var}
+      allowed_groups_help: IDs de objeto de los grupos de Entra autorizados, separados por coma o línea. Vacío = cualquier usuario del tenant. Se verifica en cada inicio de sesión (incluye grupos anidados).
+      login_upn: Nombre principal de usuario (UPN)
+      login_mail: Correo electrónico
       linked_users:
-        zero: "Ningún usuario vinculado todavía."
-        one: "1 usuario vinculado a Entra ID."
+        zero: Ningún usuario vinculado todavía.
+        one: 1 usuario vinculado a Entra ID.
         other: "%{count} usuarios vinculados a Entra ID."
-      incomplete: "El inicio de sesión está activado pero falta o es inválido: %{fields}. El botón no se mostrará hasta corregirlo."
-      saved_with_errors: "Guardado, pero falta o es inválido: %{fields}."
-      test_button: "Probar conexión con el tenant"
-      test_ok: "Conexión correcta. Emisor: %{issuer}"
-      test_issuer_mismatch: "El tenant respondió con un emisor inesperado (%{issuer}). Verifica el ID de tenant."
-      test_failed: "No se pudo contactar al tenant: %{message}"
+      incomplete: 'El inicio de sesión está activado pero falta o es inválido: %{fields}. El botón no se mostrará hasta corregirlo.'
+      saved_with_errors: 'Guardado, pero falta o es inválido: %{fields}.'
+      test_button: Probar conexión con el tenant
+      test_ok: 'Conexión correcta. Emisor: %{issuer}'
+      test_issuer_mismatch: El tenant respondió con un emisor inesperado (%{issuer}). Verifica el ID de tenant.
+      test_failed: 'No se pudo contactar al tenant: %{message}'
       fields:
-        enabled: "Activar inicio de sesión con Entra ID"
-        tenant_id: "ID de directorio (tenant)"
-        client_id: "ID de aplicación (cliente)"
-        client_secret: "Secreto de cliente"
-        button_label: "Texto del botón"
-        allowed_group_ids: "Grupos autorizados"
-        auto_create_users: "Crear usuarios automáticamente"
-        link_existing_users: "Vincular usuarios existentes"
-        update_user_on_login: "Actualizar datos en cada inicio de sesión"
-        login_attribute: "Atributo para el login"
+        enabled: Activar inicio de sesión con Entra ID
+        tenant_id: ID de directorio (tenant)
+        client_id: ID de aplicación (cliente)
+        client_secret: Secreto de cliente
+        button_label: Texto del botón
+        allowed_group_ids: Grupos autorizados
+        auto_create_users: Crear usuarios automáticamente
+        link_existing_users: Vincular usuarios existentes
+        update_user_on_login: Actualizar datos en cada inicio de sesión
+        login_attribute: Atributo para el login
+        button_logo: Logo del botón
+        custom_logo: Logo empresarial
+        local_login_mode: Acceso con usuario y contraseña
       help:
-        auto_create_users: "Crea el usuario en OpenProject en su primer inicio de sesión. Si está desactivado, solo entran usuarios ya existentes."
-        link_existing_users: "Si no hay vínculo, busca un usuario existente con el mismo login o correo y lo vincula a su cuenta de Entra (solo una vez; no se revincula a otra cuenta)."
-        update_user_on_login: "Sincroniza nombre, apellido y correo desde Entra al iniciar sesión."
+        auto_create_users: Crea el usuario en OpenProject en su primer inicio de sesión. Si está desactivado, solo entran usuarios ya existentes.
+        link_existing_users: Si no hay vínculo, busca un usuario existente con el mismo login o correo y lo vincula a su cuenta de Entra (solo una vez; no se revincula a otra cuenta).
+        update_user_on_login: Sincroniza nombre, apellido y correo desde Entra al iniciar sesión.
+      section_appearance: Apariencia de la página de inicio de sesión
+      remove_logo: Quitar el logo subido
+      custom_logo_help: PNG, JPG, GIF, WEBP o SVG de hasta %{max} KB. Se recomienda un logo horizontal o cuadrado con fondo transparente. Al subirlo, el botón pasa a usar el logo empresarial.
+      local_login_help: 'Plegado: el botón de Microsoft queda arriba y el formulario aparece al pulsar "Usar usuario y contraseña". Oculto: solo se ve Microsoft; los administradores siempre pueden entrar con usuario y contraseña en %{url}'
+      logo_empty: El archivo del logo está vacío.
+      logo_too_big: El logo supera el tamaño máximo de %{max} KB. No se cambió el logo.
+      logo_bad_type: El archivo no es una imagen PNG, JPG, GIF, WEBP o SVG. No se cambió el logo.
+      logo_unsafe_svg: El SVG contiene scripts, eventos o enlaces externos y fue rechazado. No se cambió el logo.
+      logos:
+        key: Llave (predeterminado)
+        microsoft: Logo de Microsoft
+        custom: Logo empresarial (subido)
+        none: Sin logo
+      local_modes:
+        visible: Visible (como siempre)
+        collapsed: Plegado, con enlace para mostrarlo
+        hidden: Oculto (solo Microsoft)
+    login:
+      show_local: Usar usuario y contraseña
+      hide_local: Ocultar acceso con usuario y contraseña

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0 — 2026-11-20
+
+- Logo del botón configurable: llave, Microsoft, logo empresarial subido (PNG, JPG, GIF, WEBP o SVG validado, máx. 100 KB) o sin logo.
+- Acceso con usuario y contraseña configurable: visible, plegado (enlace "Usar usuario y contraseña") u oculto, con `/login?local=1` como acceso de emergencia. Solo CSS, compatible con la CSP de OpenProject.
+
 ## 0.1.2 — 2026-11-20
 
 - Acepta id_token firmados con la llave propia de la aplicación (`jwks_uri?appid=<client_id>`). Necesario cuando la aplicación empresarial tiene SSO SAML o claims mapping configurado.

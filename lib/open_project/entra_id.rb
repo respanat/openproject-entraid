@@ -2,7 +2,7 @@
 
 module OpenProject
   module EntraId
-    VERSION = "0.1.2"
+    VERSION = "0.2.0"
 
     # Slug con el que se guarda el vínculo usuario <-> Entra (identity_url = "entra_id:<oid>").
     PROVIDER_SLUG = "entra_id"
@@ -22,4 +22,5 @@ require "open_project/entra_id/configuration"
 require "open_project/entra_id/http"
 require "open_project/entra_id/oidc_client"
 require "open_project/entra_id/graph_client"
+require "open_project/entra_id/logo_upload"
 require "open_project/entra_id/engine" if defined?(Rails::Engine)

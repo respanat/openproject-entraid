@@ -17,7 +17,7 @@
   <% end %>
 <% end %>
 
-<%= form_with url: entra_id_settings_path, method: :patch, scope: :entra_id, local: true, class: "form" do |f| %>
+<%= form_with url: entra_id_settings_path, method: :patch, scope: :entra_id, local: true, multipart: true, class: "form" do |f| %>
   <section class="form--section">
     <h3 class="form--section-title"><%= t("entra_id.settings.section_app") %></h3>
 
@@ -76,6 +76,44 @@
       <div class="form--field-container">
         <%= f.text_field :button_label, value: @entra_config.button_label, class: "form--text-field" %>
       </div>
+    </div>
+  </section>
+
+  <section class="form--section">
+    <h3 class="form--section-title"><%= t("entra_id.settings.section_appearance") %></h3>
+
+    <div class="form--field">
+      <%= f.label :button_logo, t("entra_id.settings.fields.button_logo"), class: "form--label" %>
+      <div class="form--field-container">
+        <%= f.select :button_logo,
+                     OpenProject::EntraId::Configuration::BUTTON_LOGOS.map { |k| [t("entra_id.settings.logos.#{k}"), k] },
+                     { selected: v["button_logo"].presence || "key" }, class: "form--select" %>
+      </div>
+    </div>
+
+    <div class="form--field">
+      <%= f.label :custom_logo_file, t("entra_id.settings.fields.custom_logo"), class: "form--label" %>
+      <div class="form--field-container" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+        <% if @entra_config.custom_logo.present? %>
+          <img src="<%= @entra_config.custom_logo %>" alt="" style="max-height: 40px; max-width: 200px; border: 1px solid var(--borderColor-default); padding: 4px; background: #fff;">
+          <label class="form--label-with-check-box">
+            <%= f.check_box :remove_custom_logo, { class: "form--check-box" }, "1", nil %>
+            <%= t("entra_id.settings.remove_logo") %>
+          </label>
+        <% end %>
+        <%= f.file_field :custom_logo_file, accept: "image/png,image/jpeg,image/gif,image/webp,image/svg+xml" %>
+      </div>
+      <div class="form--field-instructions"><%= t("entra_id.settings.custom_logo_help", max: OpenProject::EntraId::LogoUpload::MAX_BYTES / 1024) %></div>
+    </div>
+
+    <div class="form--field">
+      <%= f.label :local_login_mode, t("entra_id.settings.fields.local_login_mode"), class: "form--label" %>
+      <div class="form--field-container">
+        <%= f.select :local_login_mode,
+                     OpenProject::EntraId::Configuration::LOCAL_LOGIN_MODES.map { |k| [t("entra_id.settings.local_modes.#{k}"), k] },
+                     { selected: @entra_config.local_login_mode }, class: "form--select" %>
+      </div>
+      <div class="form--field-instructions"><%= t("entra_id.settings.local_login_help", url: "#{OpenProject::EntraId::Engine.callback_url(request).sub(%r{entra_id/callback\z}, "")}login?local=1") %></div>
     </div>
   </section>
 

@@ -3,13 +3,63 @@
   <%
     entra_params = {}
     entra_params[:back_url] = params[:back_url] if params[:back_url].present?
+    entra_logo = entra_config.button_logo
+    # Escape de emergencia para administradores: /login?local=1 siempre muestra el formulario.
+    entra_mode = params[:local] == "1" ? "visible" : entra_config.local_login_mode
+    # Si el usuario ya intentó entrar con contraseña (error), el formulario queda desplegado.
+    entra_expanded = params[:username].present?
   %>
-  <%= render(Primer::Beta::Button.new(tag: :a,
-                                      href: entra_id_login_path(entra_params),
-                                      block: true,
-                                      classes: "auth-provider auth-provider-entra_id",
-                                      data: { turbo: false })) do |button| %>
-    <% button.with_leading_visual_icon(icon: :key) %>
-    <span class="auth-provider-name"><%= entra_config.button_label %></span>
+  <div class="entra-id-login" data-entra-mode="<%= entra_mode %>">
+    <%= render(Primer::Beta::Button.new(tag: :a,
+                                        href: entra_id_login_path(entra_params),
+                                        block: true,
+                                        classes: "auth-provider auth-provider-entra_id",
+                                        data: { turbo: false })) do |button| %>
+      <% if entra_logo == "key" %>
+        <% button.with_leading_visual_icon(icon: :key) %>
+      <% elsif entra_logo == "microsoft" %>
+        <svg class="entra-id-logo" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 21 21" aria-hidden="true">
+          <rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+          <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+        </svg>
+      <% elsif entra_logo == "custom" %>
+        <img src="<%= entra_config.custom_logo %>" alt="" class="entra-id-logo">
+      <% end %>
+      <span class="auth-provider-name"><%= entra_config.button_label %></span>
+    <% end %>
+
+    <% if entra_mode == "collapsed" %>
+      <label class="entra-id-local-toggle">
+        <input type="checkbox" class="entra-id-local-checkbox" <%= "checked" if entra_expanded %>>
+        <span class="entra-id-local-show"><%= t("entra_id.login.show_local") %></span>
+        <span class="entra-id-local-hide"><%= t("entra_id.login.hide_local") %></span>
+      </label>
+    <% end %>
+  </div>
+
+  <% unless entra_mode == "visible" %>
+    <%# Solo CSS: la CSP de OpenProject no permite JavaScript en línea. %>
+    <style>
+      :is(#login-form, #nav-login-content):has(.entra-id-login) { display: flex; flex-direction: column; }
+      #login-form:has(.entra-id-login) > h1 { order: -3; }
+      #login-form:has(.entra-id-login) > hr { order: -2; }
+      :is(#login-form, #nav-login-content):has(.entra-id-login) > .login-auth-providers { order: -1; margin-top: 0 !important; padding-top: 0 !important; border-top: 0 !important; }
+      :is(#login-form, #nav-login-content):has(.entra-id-login) .login-auth-providers-title { display: none; }
+      <% if entra_mode == "hidden" %>
+        :is(#login-form, #nav-login-content):has(.entra-id-login) > form { display: none; }
+      <% else %>
+        :is(#login-form, #nav-login-content):has(.entra-id-local-checkbox:not(:checked)) > form { display: none; }
+        :is(#login-form, #nav-login-content):has(.entra-id-local-checkbox:checked) > form { margin-top: 16px; }
+        .entra-id-local-toggle { display: block; margin-top: 12px; text-align: center; cursor: pointer; color: var(--fgColor-accent, #0969da); font-size: 0.875rem; }
+        .entra-id-local-toggle:hover span { text-decoration: underline; }
+        .entra-id-local-checkbox { position: absolute; opacity: 0; width: 1px; height: 1px; }
+        .entra-id-local-checkbox:focus-visible ~ span { outline: 2px solid var(--focus-outlineColor, #0969da); outline-offset: 2px; }
+        .entra-id-local-checkbox:checked ~ .entra-id-local-show,
+        .entra-id-local-checkbox:not(:checked) ~ .entra-id-local-hide { display: none; }
+      <% end %>
+    </style>
   <% end %>
+  <style>
+    .auth-provider-entra_id .entra-id-logo { height: 18px; max-width: 72px; width: auto; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 8px; }
+  </style>
 <% end %>

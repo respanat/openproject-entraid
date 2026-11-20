@@ -21,6 +21,7 @@ usuarios y redirecciones posteriores al login.
 | Restringir por grupo | Lista de IDs de objeto de grupos. Usa el claim `groups` si viene; si no, consulta Graph `/me/checkMemberGroups` (transitivo, maneja el *overage* de grupos). Si Graph falla, niega el acceso |
 | Usuarios | Vincula por `oid` (`entra_id:<oid>`). Opcional: vincular usuarios existentes por login/correo (una sola vez) y crear usuarios nuevos automáticamente |
 | Perfil | Nombre, apellido y correo desde Graph `/me` (con respaldo en los claims) |
+| Apariencia | Logo del botón (llave, Microsoft, logo empresarial subido o ninguno) y acceso local visible, plegado u oculto (`/login?local=1` siempre lo muestra) |
 | Admin | *Administración → Autenticación → Microsoft Entra ID*, con botón para probar la conexión |
 
 Nunca concede ni retira el rol de administrador.
