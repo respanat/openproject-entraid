@@ -12,7 +12,7 @@ module EntraId
 
     BOOLEAN_KEYS = %w[enabled auto_create_users link_existing_users update_user_on_login].freeze
     TEXT_KEYS = %w[tenant_id client_id button_label allowed_group_ids login_attribute
-                   button_logo local_login_mode].freeze
+                   button_logo local_login_mode logo_layout].freeze
 
     def show
       @entra_config = OpenProject::EntraId.configuration

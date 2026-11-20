@@ -33,11 +33,13 @@ module OpenProject
         "update_user_on_login" => true,
         "button_logo" => "key", # key | microsoft | custom | none
         "custom_logo" => "", # data URI (image/png, image/jpeg, image/gif, image/webp, image/svg+xml)
-        "local_login_mode" => "visible" # visible | collapsed | hidden
+        "local_login_mode" => "visible", # visible | collapsed | hidden
+        "logo_layout" => "inline" # inline | above | full
       }.freeze
 
       BUTTON_LOGOS = %w[key microsoft custom none].freeze
       LOCAL_LOGIN_MODES = %w[visible collapsed hidden].freeze
+      LOGO_LAYOUTS = %w[inline above full].freeze
 
       GUID = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i
 
@@ -79,6 +81,15 @@ module OpenProject
 
       def custom_logo
         values["custom_logo"].to_s.start_with?("data:image/") ? values["custom_logo"].to_s : ""
+      end
+
+      # Solo aplica a logos de imagen (Microsoft o empresarial); con la llave o sin logo es "inline".
+      def logo_layout
+        layout = values["logo_layout"].to_s
+        return "inline" unless LOGO_LAYOUTS.include?(layout)
+        return "inline" unless %w[microsoft custom].include?(button_logo)
+
+        layout
       end
 
       def local_login_mode

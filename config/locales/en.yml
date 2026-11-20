@@ -51,6 +51,7 @@ en:
         button_logo: Button logo
         custom_logo: Company logo
         local_login_mode: Username and password sign-in
+        logo_layout: Logo layout
       help:
         auto_create_users: Creates the OpenProject user on first sign-in. If disabled, only existing users can sign in.
         link_existing_users: If no link exists, finds an existing user with the same login or email and links it to the Entra account (once; never relinked to another account).
@@ -72,6 +73,11 @@ en:
         visible: Visible (as usual)
         collapsed: Collapsed, with a link to show it
         hidden: Hidden (Microsoft only)
+      logo_layout_help: Only for the Microsoft or company logo. "Full button" shows only the logo; the text is kept for screen readers.
+      logo_layouts:
+        inline: Inline, left of the text
+        above: Above the text (larger)
+        full: Full button (logo only)
     login:
       show_local: Use username and password
       hide_local: Hide username and password sign-in

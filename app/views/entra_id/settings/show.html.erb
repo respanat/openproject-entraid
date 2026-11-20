@@ -92,6 +92,16 @@
     </div>
 
     <div class="form--field">
+      <%= f.label :logo_layout, t("entra_id.settings.fields.logo_layout"), class: "form--label" %>
+      <div class="form--field-container">
+        <%= f.select :logo_layout,
+                     OpenProject::EntraId::Configuration::LOGO_LAYOUTS.map { |k| [t("entra_id.settings.logo_layouts.#{k}"), k] },
+                     { selected: v["logo_layout"].presence || "inline" }, class: "form--select" %>
+      </div>
+      <div class="form--field-instructions"><%= t("entra_id.settings.logo_layout_help") %></div>
+    </div>
+
+    <div class="form--field">
       <%= f.label :custom_logo_file, t("entra_id.settings.fields.custom_logo"), class: "form--label" %>
       <div class="form--field-container" style="flex-direction: column; align-items: flex-start; gap: 8px;">
         <% if @entra_config.custom_logo.present? %>

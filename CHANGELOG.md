@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 — 2026-11-20
+
+- Disposición del logo: en línea, arriba del texto (más grande) o botón completo (solo el logo, texto conservado para lectores de pantalla).
+
 ## 0.2.0 — 2026-11-20
 
 - Logo del botón configurable: llave, Microsoft, logo empresarial subido (PNG, JPG, GIF, WEBP o SVG validado, máx. 100 KB) o sin logo.

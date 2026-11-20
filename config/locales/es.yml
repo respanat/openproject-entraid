@@ -51,6 +51,7 @@ es:
         button_logo: Logo del botón
         custom_logo: Logo empresarial
         local_login_mode: Acceso con usuario y contraseña
+        logo_layout: Disposición del logo
       help:
         auto_create_users: Crea el usuario en OpenProject en su primer inicio de sesión. Si está desactivado, solo entran usuarios ya existentes.
         link_existing_users: Si no hay vínculo, busca un usuario existente con el mismo login o correo y lo vincula a su cuenta de Entra (solo una vez; no se revincula a otra cuenta).
@@ -72,6 +73,11 @@ es:
         visible: Visible (como siempre)
         collapsed: Plegado, con enlace para mostrarlo
         hidden: Oculto (solo Microsoft)
+      logo_layout_help: Solo para el logo de Microsoft o el empresarial. "Botón completo" muestra solo el logo; el texto se conserva para lectores de pantalla.
+      logo_layouts:
+        inline: En línea, a la izquierda del texto
+        above: Arriba del texto (más grande)
+        full: Botón completo (solo el logo)
     login:
       show_local: Usar usuario y contraseña
       hide_local: Ocultar acceso con usuario y contraseña

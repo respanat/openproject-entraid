@@ -2,7 +2,7 @@
 
 module OpenProject
   module EntraId
-    VERSION = "0.2.0"
+    VERSION = "0.2.1"
 
     # Slug con el que se guarda el vínculo usuario <-> Entra (identity_url = "entra_id:<oid>").
     PROVIDER_SLUG = "entra_id"

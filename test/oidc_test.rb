@@ -123,4 +123,12 @@ class OidcTest < Minitest::Test
     assert_equal "", config({ "custom_logo" => "javascript:alert(1)" }).custom_logo
     assert_equal "visible", config({ "local_login_mode" => "raro" }).local_login_mode
   end
+
+  def test_logo_layout
+    logo = { "button_logo" => "custom", "custom_logo" => "data:image/png;base64,AA==" }
+    assert_equal "full", config(logo.merge("logo_layout" => "full")).logo_layout
+    assert_equal "above", config({ "button_logo" => "microsoft", "logo_layout" => "above" }).logo_layout
+    assert_equal "inline", config({ "button_logo" => "key", "logo_layout" => "full" }).logo_layout
+    assert_equal "inline", config(logo.merge("logo_layout" => "raro")).logo_layout
+  end
 end

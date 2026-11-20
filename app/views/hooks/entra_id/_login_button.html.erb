@@ -4,6 +4,7 @@
     entra_params = {}
     entra_params[:back_url] = params[:back_url] if params[:back_url].present?
     entra_logo = entra_config.button_logo
+    entra_layout = entra_config.logo_layout
     # Escape de emergencia para administradores: /login?local=1 siempre muestra el formulario.
     entra_mode = params[:local] == "1" ? "visible" : entra_config.local_login_mode
     # Si el usuario ya intentó entrar con contraseña (error), el formulario queda desplegado.
@@ -13,7 +14,8 @@
     <%= render(Primer::Beta::Button.new(tag: :a,
                                         href: entra_id_login_path(entra_params),
                                         block: true,
-                                        classes: "auth-provider auth-provider-entra_id",
+                                        classes: "auth-provider auth-provider-entra_id entra-id-layout-#{entra_layout}",
+                                        aria: { label: entra_config.button_label },
                                         data: { turbo: false })) do |button| %>
       <% if entra_logo == "key" %>
         <% button.with_leading_visual_icon(icon: :key) %>
@@ -61,5 +63,10 @@
   <% end %>
   <style>
     .auth-provider-entra_id .entra-id-logo { height: 18px; max-width: 72px; width: auto; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 8px; }
+    .auth-provider-entra_id:is(.entra-id-layout-above, .entra-id-layout-full) { height: auto !important; min-height: 32px; padding-block: 10px; }
+    .auth-provider-entra_id:is(.entra-id-layout-above, .entra-id-layout-full) .Button-label { display: flex; flex-direction: column; align-items: center; gap: 6px; white-space: normal; overflow: visible; }
+    .auth-provider-entra_id.entra-id-layout-above .entra-id-logo { height: 36px; max-width: 180px; margin: 0; }
+    .auth-provider-entra_id.entra-id-layout-full .entra-id-logo { height: 48px; max-width: 100%; margin: 0; }
+    .auth-provider-entra_id.entra-id-layout-full .auth-provider-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   </style>
 <% end %>

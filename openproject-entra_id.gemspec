@@ -3,7 +3,7 @@
 
 Gem::Specification.new do |s|
   s.name        = "openproject-entra_id"
-  s.version     = "0.2.0"
+  s.version     = "0.2.1"
   s.authors     = ["Ramiro España"]
   s.homepage    = "https://github.com/respanat/openproject-entraid"
   s.summary     = "Inicio de sesión con Microsoft Entra ID para OpenProject Community"
